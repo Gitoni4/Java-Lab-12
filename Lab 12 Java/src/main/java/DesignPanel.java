@@ -8,6 +8,8 @@ public class DesignPanel extends JPanel
 {
     private ArrayList<JButton> buttonList;
 
+    private ArrayList<JLabel> labelList;
+
     private ButtonListener buttonAction;
 
     public DesignPanel()
@@ -19,15 +21,16 @@ public class DesignPanel extends JPanel
         setBorder(BorderFactory.createCompoundBorder(innerBorder, outerBorder));
 
         buttonList = new ArrayList<>();
+        labelList = new ArrayList<>();
     }
 
     public void addComponent(String name, String type, DesignPanel designPanel)
     {
-        if (!type.equals("Button"))
+        if (!type.equals("Button") && !type.equals("Label"))
         {
             System.out.println("This type of component doesn't exist");
         }
-        else
+        else if (type.equals("Button"))
         {
             final JButton newButton = new JButton(name);
             newButton.setBounds(50, 50, (int) newButton.getPreferredSize().getWidth(), (int) newButton.getPreferredSize().getHeight());
@@ -59,6 +62,39 @@ public class DesignPanel extends JPanel
                 public void mouseMoved(MouseEvent e) { }
             });
             designPanel.add(newButton);
+        }
+        else
+        {
+            final JLabel newLabel = new JLabel(name);
+            newLabel.setBounds(50, 50, (int) newLabel.getPreferredSize().getWidth(), (int) newLabel.getPreferredSize().getHeight());
+            labelList.add(newLabel);
+
+            final int[] screenX = new int[1];
+            final int[] screenY = new int[1];
+            final int[] myX = new int[1];
+            final int[] myY = new int[1];
+
+            newLabel.addMouseMotionListener(new MouseMotionListener()
+            {
+                @Override
+                public void mouseDragged(MouseEvent e)
+                {
+                    int deltaX = e.getXOnScreen();
+                    int deltaY = e.getYOnScreen();
+
+                    myX[0] = getX();
+                    myY[0] = getY();
+
+                    System.out.println(deltaX);
+                    System.out.println(deltaY);
+
+                    newLabel.setBounds(deltaX - myX[0], deltaY - myY[0], (int) newLabel.getPreferredSize().getWidth(), (int) newLabel.getPreferredSize().getHeight());
+                }
+
+                @Override
+                public void mouseMoved(MouseEvent e) { }
+            });
+            designPanel.add(newLabel);
         }
     }
 
