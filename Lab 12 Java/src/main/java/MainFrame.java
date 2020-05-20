@@ -29,6 +29,11 @@ public class MainFrame extends JFrame
             {
                 designPanel.addComponent(controlPanel.getComponentName(), controlPanel.getComponentType(), designPanel);
             }
+
+            @Override
+            public void componentDataTable() {
+
+            }
         });
 
 
